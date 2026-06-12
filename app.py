@@ -23,63 +23,61 @@ with col1:
     dependents = st.selectbox("Dependents", ["No", "Yes"])
     tenure = st.slider("Tenure (months)", 0, 72, 12)
     phone_service = st.selectbox("Phone Service", ["No", "Yes"])
-    multiple_lines = st.selectbox("Multiple Lines", ["No", "Yes", "No phone service"])
+    multiple_lines = st.selectbox("Multiple Lines", ["No", "No phone service", "Yes"])
     internet_service = st.selectbox("Internet Service", ["DSL", "Fiber optic", "No"])
-    online_security = st.selectbox("Online Security", ["No", "Yes", "No internet service"])
-    online_backup = st.selectbox("Online Backup", ["No", "Yes", "No internet service"])
+    online_security = st.selectbox("Online Security", ["No", "No internet service", "Yes"])
+    online_backup = st.selectbox("Online Backup", ["No", "No internet service", "Yes"])
 
 with col2:
-    device_protection = st.selectbox("Device Protection", ["No", "Yes", "No internet service"])
-    tech_support = st.selectbox("Tech Support", ["No", "Yes", "No internet service"])
-    streaming_tv = st.selectbox("Streaming TV", ["No", "Yes", "No internet service"])
-    streaming_movies = st.selectbox("Streaming Movies", ["No", "Yes", "No internet service"])
+    device_protection = st.selectbox("Device Protection", ["No", "No internet service", "Yes"])
+    tech_support = st.selectbox("Tech Support", ["No", "No internet service", "Yes"])
+    streaming_tv = st.selectbox("Streaming TV", ["No", "No internet service", "Yes"])
+    streaming_movies = st.selectbox("Streaming Movies", ["No", "No internet service", "Yes"])
     contract = st.selectbox("Contract", ["Month-to-month", "One year", "Two year"])
     paperless_billing = st.selectbox("Paperless Billing", ["No", "Yes"])
     payment_method = st.selectbox("Payment Method", [
-        "Electronic check", "Mailed check",
-        "Bank transfer (automatic)", "Credit card (automatic)"
+        "Bank transfer (automatic)", "Credit card (automatic)",
+        "Electronic check", "Mailed check"
     ])
     monthly_charges = st.number_input("Monthly Charges ($)", 0.0, 200.0, 65.0)
     total_charges = st.number_input("Total Charges ($)", 0.0, 10000.0, 1500.0)
 
 st.markdown("---")
 
-# Encoding maps (matching LabelEncoder alphabetical order)
-encode = {
-    "gender": {"Female": 0, "Male": 1},
-    "binary": {"No": 0, "Yes": 1},
-    "multiple_lines": {"No": 0, "No phone service": 1, "Yes": 2},
-    "internet_service": {"DSL": 0, "Fiber optic": 1, "No": 2},
-    "three_option": {"No": 0, "No internet service": 1, "Yes": 2},
-    "contract": {"Month-to-month": 0, "One year": 1, "Two year": 2},
-    "payment_method": {
-        "Bank transfer (automatic)": 0,
-        "Credit card (automatic)": 1,
-        "Electronic check": 2,
-        "Mailed check": 3
-    }
+# Encoding maps (alphabetical LabelEncoder order)
+encode_gender = {"Female": 0, "Male": 1}
+encode_binary = {"No": 0, "Yes": 1}
+encode_multiple_lines = {"No": 0, "No phone service": 1, "Yes": 2}
+encode_internet = {"DSL": 0, "Fiber optic": 1, "No": 2}
+encode_three = {"No": 0, "No internet service": 1, "Yes": 2}
+encode_contract = {"Month-to-month": 0, "One year": 1, "Two year": 2}
+encode_payment = {
+    "Bank transfer (automatic)": 0,
+    "Credit card (automatic)": 1,
+    "Electronic check": 2,
+    "Mailed check": 3
 }
 
 if st.button("🔍 Predict Churn"):
-    # Build input array
     input_data = np.array([[
-        encode["gender"][gender],
-        encode["binary"][senior],
-        encode["binary"][partner],
-        encode["binary"][dependents],
+        0,  # customerID encoded as 0 (dummy)
+        encode_gender[gender],
+        encode_binary[senior],
+        encode_binary[partner],
+        encode_binary[dependents],
         tenure,
-        encode["binary"][phone_service],
-        encode["multiple_lines"][multiple_lines],
-        encode["internet_service"][internet_service],
-        encode["three_option"][online_security],
-        encode["three_option"][online_backup],
-        encode["three_option"][device_protection],
-        encode["three_option"][tech_support],
-        encode["three_option"][streaming_tv],
-        encode["three_option"][streaming_movies],
-        encode["contract"][contract],
-        encode["binary"][paperless_billing],
-        encode["payment_method"][payment_method],
+        encode_binary[phone_service],
+        encode_multiple_lines[multiple_lines],
+        encode_internet[internet_service],
+        encode_three[online_security],
+        encode_three[online_backup],
+        encode_three[device_protection],
+        encode_three[tech_support],
+        encode_three[streaming_tv],
+        encode_three[streaming_movies],
+        encode_contract[contract],
+        encode_binary[paperless_billing],
+        encode_payment[payment_method],
         monthly_charges,
         total_charges
     ]])
@@ -94,3 +92,4 @@ if st.button("🔍 Predict Churn"):
 
 st.markdown("---")
 st.caption("Built with Scikit-learn & Streamlit | Muhammed Shaheem")
+
