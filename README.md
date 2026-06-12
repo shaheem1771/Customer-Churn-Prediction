@@ -2,7 +2,7 @@
 
 A Machine Learning project that predicts customer churn using customer demographics, subscription information, and service usage patterns.
 
-🚀 **Live Demo:** [Try the app here](https://customer-churn-prediction-ni.streamlit.app)
+**Live Demo:** [Try the app here](https://customer-churn-prediction-ni.streamlit.app)
 
 -----
 
